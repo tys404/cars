@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 
 url = "https://archive.ics.uci.edu/ml/machine-learning-databases/autos/imports-85.data"
@@ -8,8 +9,29 @@ headers = ["symboling", "normalized-losses", 'make', "fuel-type", "aspiration", 
 
 df = pd.read_csv(url, header=None)
 df.columns = headers
+#
+# print(df.head(5))
+# print(df.dtypes)
+# print(df.describe())
+# print(df.all())
+# print(df.describe(include="all"))
+# print(df.info)
+#
+# print(df["symboling"])
+# print(df["engine-type"])
+# print(df["fuel-system"])
 
-print(df.head(5))
+# delete rows without price
+df.dropna(subset=["price"], axis=0, inplace=True)
 
-df.to_csv("new.csv")
+# change '?' to NaN
+df["normalized-losses"].replace('?', '', inplace=True)
+mean = df["normalized-losses"].mean()
+df["normalized-losses"].replace(np.nan, mean)
+
+print(mean)
+
+
+
+# df.to_csv("new.csv")
 
